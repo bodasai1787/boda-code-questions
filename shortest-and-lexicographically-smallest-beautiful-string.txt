@@ -1,0 +1,51 @@
+#date : 18-10-2023
+class Solution {
+public:
+    string shortestBeautifulSubstring(string s, int k) {
+        int n = s.size();
+        int countOfOnes = 0;
+        int i = 0;
+        int j = 0;
+        int minilength = INT_MAX;
+        vector<pair<int,int>> indexIntervals;
+        while(i<n && j<n){
+            while(j<n && countOfOnes<k)
+            {
+                if(s[j] == '1')
+                {
+                    countOfOnes++;
+                    if(countOfOnes == k)
+                    {
+                        while(i<n && s[i] == '0')
+                        i++;
+                        if(minilength>=j-i+1)
+                        {
+                            indexIntervals.push_back(make_pair(i,j));
+                            minilength = j-i+1;
+                        }     
+                    }
+                }
+                j++;
+            }
+            while(i<n && s[i]!= '1')
+            {
+                    i++;
+            }
+            i++;
+            countOfOnes--;
+            
+        }
+        string substrWithKOnes;
+        long mini = INT_MAX;
+        vector<string> allPossibleStr;
+        for(auto interval : indexIntervals){
+            if(minilength == interval.second-interval.first+1){
+             string str = s.substr(interval.first, interval.second-interval.first+1);
+             allPossibleStr.push_back(str);
+            }
+        }
+        sort(allPossibleStr.begin(),allPossibleStr.end());
+        substrWithKOnes =(allPossibleStr.empty())?"":allPossibleStr[0];
+        return substrWithKOnes;
+    }
+};
