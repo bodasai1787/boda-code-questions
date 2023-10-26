@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int numFactoredBinaryTrees(vector<int>& arr) {
+        int mod = 1000000007;
+        int n = arr.size();
+        map<int,int> m;
+        vector<long> dp(n,1);
+        sort(arr.begin(),arr.end());
+        for(int i=0; i<n; i++){
+            for(int j=0; j<i; j++){
+                if(arr[i]%arr[j]==0 && m.count(arr[i]/arr[j])){
+                    dp[i] += ((dp[j]%mod)*(dp[m[arr[i]/arr[j]]]%mod))%mod;
+                }
+            }
+            m[arr[i]] = i;
+        }
+        long long sum = 0;
+        for(int i=0; i<n; i++){
+            sum+=(dp[i]%mod);
+        }
+        return sum%mod;
+    }
+};
