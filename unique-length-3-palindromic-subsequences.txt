@@ -1,0 +1,40 @@
+class Solution {
+public:
+    static int charToInt(char c){
+        return c-'a'+1;
+    }
+    static char intToChar(int i){
+        return 'a'+i-1;
+    }
+    int countPalindromicSubsequence(string s) {
+        int strlen = s.size();
+        vector<int> lastSeen(27,-1);
+        vector<int> firstSeen(27,-1);
+        for(int i=0; i<strlen; i++){
+            lastSeen[charToInt(s[i])] = i;
+            if(firstSeen[charToInt(s[i])] == -1){
+            firstSeen[charToInt(s[i])] = i;
+            }
+        }
+        vector<vector<bool>> palindromeElementMap(27,vector<bool> (27,0));
+        for(int i=1; i<=26; i++){
+            if(firstSeen[i]!=-1 && lastSeen[i]!=-1 && lastSeen[i] != firstSeen[i]){
+                for(int j=firstSeen[i]+1; j<lastSeen[i]; j++){
+                    palindromeElementMap[i][charToInt(s[j])] = true;
+                    }
+                }
+            }
+        
+        int count=0;
+        for(int i=1;i<=26;i++){
+            for(int j=1; j<=26; j++){
+                if(palindromeElementMap[i][j]){
+                    count++;
+                } 
+            }
+        }
+
+        return count;
+
+    }
+};
