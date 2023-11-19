@@ -1,0 +1,42 @@
+Intuition
+The larger elements in array converts into next larger integer with each operation. Hence the frequency of the next larger element keeps on increasing till it reaches minimum element. Once it reaches minimum element of array all elements value equals to its minimum value.
+
+Approach
+Maintain frequency of each element in a hashtable. Convert all largest elements into next largest elements hence the overall operations to convert will equal to frequency of largest element and futher the next largest element frequency will increase by largest element frequency and so on .. till only minimum element is left in the table.
+
+Complexity
+Time complexity:
+O(n)
+
+Space complexity:
+O(1)
+
+Code
+class Solution {
+public:
+    int reductionOperations(vector<int>& nums) {
+        int n = nums.size(), mini=INT_MAX;
+        vector<int> freqTable(50001,0);
+        for(int i=0; i<n; i++)
+        {
+            freqTable[nums[i]]++;
+            mini = min(nums[i],mini);
+        }
+        long sum = 0;
+        int prevFreq = 0;
+        for(int i=50000; i>=0; i--){
+            if(freqTable[i] != 0)
+            {
+                if(i == mini)
+                {
+                    break;
+                }
+                freqTable[i] += prevFreq;
+                prevFreq = freqTable[i];
+                sum += freqTable[i];
+            }
+        }
+        return sum;
+
+    }
+};
