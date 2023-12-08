@@ -1,0 +1,48 @@
+class Solution
+{
+    public:
+    void merge(int arr[], int l, int m, int r)
+    {    int dupArr[r-l+1];    //extra space
+         for(int i=l,j=0; i<=r&&j<=r-l; i++,j++){
+             dupArr[j] = arr[i]; // fill the space with arr[]
+         }
+		 //two pointer approach
+         int ptr1 = 0; // tracks first half of elements
+         int ptr2 = m-l+1; // tracks second half of elements
+         int ptr3 = l; // for original array replacments
+         while(ptr3 <= r && ptr1<=m-l && ptr2<=r-l){
+             if(dupArr[ptr1]<dupArr[ptr2]){
+                 arr[ptr3] = dupArr[ptr1];
+                 ptr1++;
+             }
+             else{
+                arr[ptr3] = dupArr[ptr2];
+                ptr2++;
+             }
+             ptr3++;
+         }
+
+         while(ptr1 <= m-l){ // taking care of pending replacements in first half
+             arr[ptr3] = dupArr[ptr1];
+             ptr1++;
+             ptr3++;
+         }
+         while(ptr2 <= r-l){ // taking care of pending replacements in second half
+             arr[ptr3] = dupArr[ptr2]; 
+            ptr2++;
+            ptr3++;
+         }
+         return;
+    }
+    public:
+    void mergeSort(int arr[], int l, int r)
+    {
+        if(l!=r){
+            int mid = (l+r)/2;
+            mergeSort(arr,l,mid);
+            mergeSort(arr,mid+1,r);
+            merge(arr,l,mid,r);
+        }
+        return;
+    }
+};
